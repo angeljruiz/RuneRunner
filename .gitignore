@@ -4,4 +4,4 @@
 .idea/
 .jagex_cache_32/
 out/
-*.gitignore
+.txt
