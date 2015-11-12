@@ -1,0 +1,6 @@
+*.jar
+*.log
+*.iml
+.idea/
+.jagex_cache_32/
+out/
