@@ -1,4 +1,3 @@
-import org.powerbot.script.Condition;
 import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt4.ClientContext;
@@ -52,7 +51,7 @@ public class Move extends Task<ClientContext>
     @Override
     public void execute()
     {
-        if(banking)
+        /*if(banking)
         {
             if(ctx.movement.distance(ctx.objects.select().id(bankIDs).nearest().poll()) > 5)
             {
@@ -83,6 +82,6 @@ public class Move extends Task<ClientContext>
             }
             ctx.objects.select().id(currentAltar).poll().interact("Enter");
         }
-        Condition.sleep(rng.nextInt(750, 1250));
+        Condition.sleep(rng.nextInt(750, 1250)); */
     }
 }
