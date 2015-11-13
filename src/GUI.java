@@ -9,11 +9,10 @@ import java.awt.event.ActionListener;
  */
 
 public class GUI extends JFrame {
-    private String[] areaOptions = { "Air Runes - Fally", "Earth Runes - Varrock", "Fire Runes - Al", "Body Runes - Edge" };
+    private String[] areaOptions = { "Air Runes - Fally", "Earth Runes - Varrock", "Fire Runes - Al Kharid", "Body Runes - Edge" };
     private JComboBox<String> comboBox1 = new JComboBox<>(areaOptions);
     private JButton button1 = new JButton("Start");
     private int selectedArea = -1;
-    private int areas = 4;
     private boolean done = false;
 
     public boolean isDone() { return done; }

@@ -22,6 +22,12 @@ public class Craft extends Task<ClientContext>
 
     private Random rng = new Random();
 
+    /*Condition.wait(new Callable<Boolean>() {
+    @Override
+    public Boolean call() throws Exception {
+        return !ctx.players.local().inCombat();
+    }}, 500, 10);*/
+
 
     public Craft(ClientContext ctx) {
         super(ctx);
@@ -61,7 +67,6 @@ public class Craft extends Task<ClientContext>
     @Override
     public boolean activate()
     {
-        System.out.println(ctx.skills.experience(20));
         if(ctx.objects.select().id(currentAltar).poll().valid())
         {
             System.out.println("Going to craft!");

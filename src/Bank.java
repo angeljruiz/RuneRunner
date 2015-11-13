@@ -18,9 +18,9 @@ public class Bank extends Task<ClientContext>
         super(ctx);
     }
 
-    public void setTalisman(boolean b, int ID)
+    public void setTalisman(int ID)
     {
-        usingTalisman = b;
+        usingTalisman = true;
         talismanID = ID;
     }
 

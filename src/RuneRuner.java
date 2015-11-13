@@ -26,9 +26,9 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
 
     private long startTime;
     private int startExp;
-    private boolean usingTalisman = false;
+    private int currentTalismain = -1;
 
-    private int[] talismainID = { -1 };
+    private int[] talismainIDs = { -1 };
 
     private Image background;
     GUI gui = new GUI();
@@ -65,10 +65,15 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
     {
         Graphics2D g2 = (Graphics2D)g;
         g2.setColor(Color.white);
+        long xpGained = (ctx.skills.experience(20) - startExp);
+        long xpPerHR = perHour(ctx.skills.experience(20) - startExp);
+        int xpTillLevel = ctx.skills.experienceAt(ctx.skills.level(20) + 1);
         g2.drawImage(background, 10, 200, null);
         g2.drawString("Run time: " + formatTime(this.getRuntime()), 12, 212);
-        g2.drawString("Exp gained: " + (ctx.skills.experience(20) - startExp) + "/" + perHour(ctx.skills.experience(20) - startExp) + "HR", 12, 227);
+        g2.drawString("Exp gained: "+ xpGained + "/"+ xpPerHR + "HR", 12, 227);
+        g2.drawString("Leveling in: " + formatTime(xpTillLevel/xpPerHR), 12, 242);
     }
+
 
     @Override
     public void start()
@@ -76,8 +81,8 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
             background = loadAndSaveImage(this, "http://i.imgur.com/HA7Avc0.jpg", "background");
             startTime = System.currentTimeMillis();
             startExp = ctx.skills.experience(20);
-            if(!ctx.inventory.select().id(talismainID).isEmpty())
-                usingTalisman = true;
+            if(!ctx.inventory.select().id(talismainIDs).isEmpty())
+                banker.setTalisman(currentTalismain);
             System.out.println("Script Started");
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
@@ -103,7 +108,6 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
             init = true;
             crafter.setArea(gui.getArea());
             mover.setArea(gui.getArea());
-            System.out.println(gui.getArea());
             taskList.addAll(Arrays.asList(crafter, mover, banker));
         }
     }

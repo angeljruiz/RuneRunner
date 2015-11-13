@@ -86,7 +86,7 @@ public class Move extends Task<ClientContext>
 
         if(!banking && ctx.movement.distance(currentAreaEnd) > 12 || ctx.movement.distance(currentAreaEnd) == -1)
         {
-            if(ctx.movement.distance(ctx.movement.destination()) <= 5 || ctx.movement.distance(ctx.movement.destination()) >= 12) {
+            if(ctx.movement.distance(ctx.movement.destination()) <= 5) {
                 if (!currentPath.traverse()) {
                     ctx.movement.step(currentAreaEnd);
                     Condition.sleep(rng.nextInt(250, 550));
