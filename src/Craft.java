@@ -18,8 +18,7 @@ public class Craft extends Task<ClientContext>
     private int currentAltar;
     private int currentPortal;
 
-
-
+    private int expGained = 0;
 
     private Random rng = new Random();
 
@@ -64,6 +63,7 @@ public class Craft extends Task<ClientContext>
     @Override
     public boolean activate()
     {
+        System.out.println(ctx.skills.experience(20));
         if(ctx.objects.select().id(currentAltar).poll().valid())
         {
             System.out.println("Going to craft!");
