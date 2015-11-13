@@ -63,7 +63,7 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
         Graphics2D g2 = (Graphics2D)g;
         g2.setColor(Color.white);
         g2.drawImage(background, 10, 200, null);
-        g2.drawString("Rune time: " + formatTime(this.getRuntime()), 12, 212);
+        g2.drawString("Run time: " + formatTime(this.getRuntime()), 12, 212);
         g2.drawString("Exp gained: " + (ctx.skills.experience(20) - startExp) + "/" + perHour(ctx.skills.experience(20) - startExp), 12, 227);
     }
 
