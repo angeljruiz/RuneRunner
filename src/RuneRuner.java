@@ -2,6 +2,7 @@ import org.powerbot.script.PollingScript;
 import org.powerbot.script.Script;
 import org.powerbot.script.rt4.ClientContext;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +21,7 @@ public class RuneRuner extends PollingScript<ClientContext> {
     public void start()
     {
         System.out.println("Script Started");
-       /* SwingUtilities.invokeLater(new Runnable() {
+        SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 Painter gui = new Painter();
@@ -29,7 +30,7 @@ public class RuneRuner extends PollingScript<ClientContext> {
                 frame.pack();
                 frame.setVisible(true);
             }
-        }); */
+        });
         taskList.addAll(Arrays.asList(new Craft(ctx), new Move(ctx), new Bank(ctx)));
     }
 
