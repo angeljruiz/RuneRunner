@@ -26,6 +26,9 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
 
     private long startTime;
     private int startExp;
+    private boolean usingTalisman = false;
+
+    private int[] talismainID = { -1 };
 
     private Image background;
     GUI gui = new GUI();
@@ -64,7 +67,7 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
         g2.setColor(Color.white);
         g2.drawImage(background, 10, 200, null);
         g2.drawString("Run time: " + formatTime(this.getRuntime()), 12, 212);
-        g2.drawString("Exp gained: " + (ctx.skills.experience(20) - startExp) + "/" + perHour(ctx.skills.experience(20) - startExp), 12, 227);
+        g2.drawString("Exp gained: " + (ctx.skills.experience(20) - startExp) + "/" + perHour(ctx.skills.experience(20) - startExp) + "HR", 12, 227);
     }
 
     @Override
@@ -73,6 +76,8 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
             background = loadAndSaveImage(this, "http://i.imgur.com/HA7Avc0.jpg", "background");
             startTime = System.currentTimeMillis();
             startExp = ctx.skills.experience(20);
+            if(!ctx.inventory.select().id(talismainID).isEmpty())
+                usingTalisman = true;
             System.out.println("Script Started");
             SwingUtilities.invokeLater(new Runnable() {
                 @Override

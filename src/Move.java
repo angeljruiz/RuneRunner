@@ -81,15 +81,15 @@ public class Move extends Task<ClientContext>
     @Override
     public void execute()
     {
-        if(ctx.movement.energyLevel() > 20 && !ctx.movement.running())
+        if(ctx.movement.energyLevel() > rng.nextInt(15, 30) && !ctx.movement.running())
             ctx.movement.running(true);
 
         if(!banking && ctx.movement.distance(currentAreaEnd) > 12 || ctx.movement.distance(currentAreaEnd) == -1)
         {
-            if(ctx.movement.distance(ctx.movement.destination()) <= 5) {
+            if(ctx.movement.distance(ctx.movement.destination()) <= 5 || ctx.movement.distance(ctx.movement.destination()) >= 12) {
                 if (!currentPath.traverse()) {
                     ctx.movement.step(currentAreaEnd);
-                    Condition.sleep(rng.nextInt(500, 750));
+                    Condition.sleep(rng.nextInt(250, 550));
                 }
             }
         } else if(!banking && ctx.movement.distance(currentAreaEnd) <= 12)
@@ -100,7 +100,7 @@ public class Move extends Task<ClientContext>
             }
             if(ctx.movement.distance(currentAreaEnd) <= 6) {
                 ctx.objects.select().id(currentAltar).poll().interact("Enter");
-                Condition.sleep(rng.nextInt(500, 750));
+                Condition.sleep(rng.nextInt(750, 100));
             } else ctx.movement.step(currentAreaEnd);
         }
         if(banking)
@@ -108,11 +108,11 @@ public class Move extends Task<ClientContext>
             if(ctx.movement.distance(ctx.movement.destination()) <= 5 || ctx.movement.distance(ctx.movement.destination()) == -1) {
                 if(ctx.movement.distance(ctx.objects.select().id(bankIDs).nearest().poll()) <= 5 && !ctx.objects.select().id(bankIDs).nearest().poll().inViewport()) {
                     ctx.camera.turnTo(ctx.objects.select().id(bankIDs).nearest().poll());
-                    Condition.sleep(rng.nextInt(500, 750));
+                    Condition.sleep(rng.nextInt(250, 550));
                 }
                 if (!currentPathRev.traverse()) {
                     ctx.movement.step(ctx.objects.select().id(bankIDs).nearest().poll());
-                    Condition.sleep(rng.nextInt(500, 750));
+                    Condition.sleep(rng.nextInt(250, 550));
                 }
             }
         }

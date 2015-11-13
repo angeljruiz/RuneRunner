@@ -58,8 +58,6 @@ public class Craft extends Task<ClientContext>
         }
     }
 
-
-
     @Override
     public boolean activate()
     {

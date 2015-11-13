@@ -10,10 +10,18 @@ public class Bank extends Task<ClientContext>
     private int runeEs = 1436;
     private int[] bankIDs = { 24101, 11748, 3194, 11744, 3193 };
     private Random rng = new Random();
+    private int talismanID = -1;
+    private boolean usingTalisman;
 
 
     public Bank(ClientContext ctx){
         super(ctx);
+    }
+
+    public void setTalisman(boolean b, int ID)
+    {
+        usingTalisman = b;
+        talismanID = ID;
     }
 
     @Override
@@ -49,6 +57,11 @@ public class Bank extends Task<ClientContext>
                 if(ctx.bank.select().id(runeEs).count() != 0)
                 {
                     ctx.bank.withdraw(runeEs, 0);
+                    Condition.sleep(rng.nextInt(750, 1000));
+                }
+                if(usingTalisman)
+                {
+                    ctx.bank.withdraw(talismanID, 1);
                     Condition.sleep(rng.nextInt(750, 1000));
                 }
             }
