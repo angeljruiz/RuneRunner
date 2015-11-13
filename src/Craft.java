@@ -9,14 +9,14 @@ import org.powerbot.script.rt4.ClientContext;
 public class Craft extends Task<ClientContext>
 {
     private int runeEs = 1436;
-    private int airPortal = 14841, earPortal = 14844, firPortal = 14845, bodPortal = 14846;
-    private int airAltarID = 14897, earAltarID = 14900, firAltarID = 14901, bodAltarID = 14902;
-    private Tile airAltarTile = new Tile(2842, 4833, 0), earAltarTile = new Tile(2658, 4839, 0), firAltarTile = new Tile(2584, 4840, 0), bodAltarTile = new Tile(2522, 4838, 0);
-    private Tile airPortalTile = new Tile(2841, 4830, 0), earPortalTile = new Tile(2657, 4830, 0), firPortalTile = new Tile(2576, 4848, 0), bodPortalTile = new Tile(2521, 4834, 0);
-    private Tile currentPortalTile = bodPortalTile;
-    private Tile currentAltarTile = bodAltarTile;
-    private int currentAltar = bodAltarID;
-    private int currentPortal = bodPortal;
+    private int airPortal = 14841, earPortal = 14844, firPortal = 14845, bodPortal = 14846; //Portal
+    private int airAltarID = 14897, earAltarID = 14900, firAltarID = 14901, bodAltarID = 14902; //Altar
+    private Tile airAltarTile = new Tile(2842, 4833, 0), earAltarTile = new Tile(2658, 4839, 0), firAltarTile = new Tile(2584, 4840, 0), bodAltarTile = new Tile(2522, 4838, 0); //Tile next to altar
+    private Tile airPortalTile = new Tile(2841, 4830, 0), earPortalTile = new Tile(2657, 4830, 0), firPortalTile = new Tile(2576, 4848, 0), bodPortalTile = new Tile(2521, 4834, 0); //Tile next to portal
+    private Tile currentPortalTile = earPortalTile;
+    private Tile currentAltarTile = earAltarTile;
+    private int currentAltar = earAltarID;
+    private int currentPortal = earPortal;
 
 
 
