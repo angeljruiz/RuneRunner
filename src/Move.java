@@ -21,13 +21,42 @@ public class Move extends Task<ClientContext>
     public static Tile[] tileEdBod = {new Tile(3091, 3491, 0), new Tile(3087, 3488, 0), new Tile(3083, 3485, 0), new Tile(3081, 3481, 0), new Tile(3080, 3477, 0), new Tile(3080, 3472, 0), new Tile(3080, 3467, 0), new Tile(3084, 3466, 0), new Tile(3086, 3462, 0), new Tile(3086, 3457, 0), new Tile(3084, 3453, 0), new Tile(3081, 3450, 0), new Tile(3077, 3451, 0), new Tile(3073, 3450, 0), new Tile(3072, 3446, 0), new Tile(3069, 3443, 0), new Tile(3065, 3440, 0), new Tile(3061, 3438, 0), new Tile(3059, 3438, 0), new Tile(3059, 3438, 0)};
     public static Tile[] tileFalAir = {new Tile(3012, 3359, 0), new Tile(3008, 3358, 0), new Tile(3008, 3353, 0), new Tile(3007, 3349, 0), new Tile(3007, 3344, 0), new Tile(3007, 3339, 0), new Tile(3007, 3334, 0), new Tile(3007, 3329, 0), new Tile(3007, 3324, 0), new Tile(3007, 3319, 0), new Tile(3006, 3315, 0), new Tile(3006, 3310, 0), new Tile(3004, 3306, 0), new Tile(3000, 3304, 0), new Tile(2998, 3300, 0), new Tile(2995, 3297, 0), new Tile(2991, 3295, 0)};
     private int currentAltar = edAltar;
-    private TilePath currentPath = ctx.movement.newTilePath(tileEdBod);
-    private TilePath currentPathRev = ctx.movement.newTilePath(tileEdBod).reverse();
+    private TilePath currentPath;
+    private TilePath currentPathRev;
     private Tile currentAreaEnd = edEnd;
     private boolean banking = false;
     Random rng = new Random();
 
-
+    public void setArea(int areaID)
+    {
+        switch (areaID)
+        {
+            case 0: //Fally air
+                currentAltar = falAltar;
+                currentPath = ctx.movement.newTilePath(tileFalAir);
+                currentPathRev = ctx.movement.newTilePath(tileFalAir).reverse();
+                currentAreaEnd = falEnd;
+                break;
+            case 1: //Varrock Earth
+                currentAltar = varAltar;
+                currentPath = ctx.movement.newTilePath(tileVarEar);
+                currentPathRev = ctx.movement.newTilePath(tileVarEar).reverse();
+                currentAreaEnd = varEnd;
+                break;
+            case 2: //Al Fire
+                currentAltar = alAltar;
+                currentPath = ctx.movement.newTilePath(tileAlFir);
+                currentPathRev = ctx.movement.newTilePath(tileAlFir).reverse();
+                currentAreaEnd = alEnd;
+                break;
+            case 3: //Ed Body
+                currentAltar = edAltar;
+                currentPath = ctx.movement.newTilePath(tileEdBod);
+                currentPathRev = ctx.movement.newTilePath(tileEdBod).reverse();
+                currentAreaEnd = edEnd;
+                break;
+        }
+    }
 
 
     public Move (ClientContext ctx)

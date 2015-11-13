@@ -13,10 +13,10 @@ public class Craft extends Task<ClientContext>
     private int airAltarID = 14897, earAltarID = 14900, firAltarID = 14901, bodAltarID = 14902; //Altar
     private Tile airAltarTile = new Tile(2842, 4833, 0), earAltarTile = new Tile(2658, 4839, 0), firAltarTile = new Tile(2584, 4840, 0), bodAltarTile = new Tile(2522, 4838, 0); //Tile next to altar
     private Tile airPortalTile = new Tile(2841, 4830, 0), earPortalTile = new Tile(2657, 4830, 0), firPortalTile = new Tile(2576, 4848, 0), bodPortalTile = new Tile(2521, 4834, 0); //Tile next to portal
-    private Tile currentPortalTile = bodPortalTile;
-    private Tile currentAltarTile = bodAltarTile;
-    private int currentAltar = bodAltarID;
-    private int currentPortal = bodPortal;
+    private Tile currentPortalTile;
+    private Tile currentAltarTile;
+    private int currentAltar;
+    private int currentPortal;
 
 
 
@@ -26,6 +26,37 @@ public class Craft extends Task<ClientContext>
 
     public Craft(ClientContext ctx) {
         super(ctx);
+    }
+
+    public void setArea(int areaID)
+    {
+        switch (areaID)
+        {
+            case 0: //Fally air
+                currentPortalTile = airPortalTile;
+                currentAltarTile = airAltarTile;
+                currentAltar = airAltarID;
+                currentPortal = airPortal;
+                break;
+            case 1: //Varrock Earth
+                currentPortalTile = earPortalTile;
+                currentAltarTile = earAltarTile;
+                currentAltar = earAltarID;
+                currentPortal = earPortal;
+                break;
+            case 2: //Al Fire
+                currentPortalTile = firPortalTile;
+                currentAltarTile = firAltarTile;
+                currentAltar = firAltarID;
+                currentPortal = firPortal;
+                break;
+            case 3: //Ed Body
+                currentPortalTile = bodPortalTile;
+                currentAltarTile = bodAltarTile;
+                currentAltar = bodAltarID;
+                currentPortal = bodPortal;
+                break;
+        }
     }
 
 
