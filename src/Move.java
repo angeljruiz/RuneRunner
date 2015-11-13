@@ -51,37 +51,6 @@ public class Move extends Task<ClientContext>
     @Override
     public void execute()
     {
-        /*if(banking)
-        {
-            if(ctx.movement.distance(ctx.objects.select().id(bankIDs).nearest().poll()) > 5)
-            {
-                System.out.println("Found an altar!");
 
-                ctx.movement.step(ctx.objects.select().id(bankIDs).poll());
-            }
-            else if(!currentPathRev.traverse())
-            {
-                ctx.movement.step(currentPathRev.next());
-            }
-        }
-        if(!banking && !ctx.objects.select().id(currentAltar).poll().inViewport()){
-            if(ctx.movement.distance(currentAreaEnd) > 5)
-            {
-                ctx.movement.step(currentAreaEnd);
-            }
-            else if(!currentPath.traverse() && !ctx.objects.select().id(currentAltar).poll().valid())
-                ctx.movement.step(currentPath.next());
-        }
-        if(ctx.objects.select().id(currentAltar).poll().valid() && !banking)
-        {
-            System.out.println("Found an altar!");
-            if(!ctx.objects.select().id(currentAltar).poll().inViewport())
-            {
-                ctx.camera.turnTo(ctx.objects.select().id(currentAltar).poll());
-                Condition.sleep(rng.nextInt(750, 1000));
-            }
-            ctx.objects.select().id(currentAltar).poll().interact("Enter");
-        }
-        Condition.sleep(rng.nextInt(750, 1250)); */
     }
 }
