@@ -30,7 +30,6 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
 
     private int[] talismainIDs = { -1 };
 
-    private Image background;
     GUI gui = new GUI();
 
     public static BufferedImage loadAndSaveImage(PollingScript script, String url, String imageName) { //Thanks Robert G
@@ -64,13 +63,15 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
     public void repaint(Graphics g)
     {
         Graphics2D g2 = (Graphics2D)g;
-        g2.setColor(Color.white);
+        Color gray = new Color(128, 128, 128, 190);
+        g2.setColor(gray);
         int xpGained = (ctx.skills.experience(20) - startExp);
         long xpPerHR = perHour(xpGained);
         int xpTillLevel = ctx.skills.experienceAt(ctx.skills.level(20) + 1) - ctx.skills.experience(20);
-        g2.drawImage(background, 10, 200, null);
-        g2.drawString("Run time: " + formatTime(getRuntime()), 12, 212);
-        g2.drawString("Exp gained: "+ xpGained + "/"+ xpPerHR + "HR", 12, 227);
+        g2.fillRect(10, 200, 150, 39);
+        g2.setColor(Color.WHITE);
+        g2.drawString("Run time: " + formatTime(getRuntime()), 15, 215);
+        g2.drawString("Exp gained: "+ xpGained + "/"+ xpPerHR + "HR", 15, 230);
         //g2.drawString("Leveling in: " + formatTime((long)(xpTillLevel * 3600000L)/(xpPerHR * 3600000L)), 12, 242);
     }
 
@@ -78,7 +79,6 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
     @Override
     public void start()
     {
-            background = loadAndSaveImage(this, "http://i.imgur.com/HA7Avc0.jpg", "background");
             startTime = System.currentTimeMillis();
             startExp = ctx.skills.experience(20);
             if(!ctx.inventory.select().id(talismainIDs).isEmpty())
