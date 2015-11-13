@@ -56,7 +56,7 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
         return (h < 10 ? "0" + h : h) + ":" + (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
     }
 
-    public int perHour(int gained) { return ((int) ((gained) * 3600000D / (System.currentTimeMillis() - startTime)));}
+    public int perHour(int gained) { return ((int) ((gained) * 3600000D / getRuntime()));}
 
 
 
@@ -65,13 +65,13 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
     {
         Graphics2D g2 = (Graphics2D)g;
         g2.setColor(Color.white);
-        long xpGained = (ctx.skills.experience(20) - startExp);
-        long xpPerHR = perHour(ctx.skills.experience(20) - startExp);
-        int xpTillLevel = ctx.skills.experienceAt(ctx.skills.level(20) + 1);
+        int xpGained = (ctx.skills.experience(20) - startExp);
+        long xpPerHR = perHour(xpGained);
+        int xpTillLevel = ctx.skills.experienceAt(ctx.skills.level(20) + 1) - ctx.skills.experience(20);
         g2.drawImage(background, 10, 200, null);
-        g2.drawString("Run time: " + formatTime(this.getRuntime()), 12, 212);
+        g2.drawString("Run time: " + formatTime(getRuntime()), 12, 212);
         g2.drawString("Exp gained: "+ xpGained + "/"+ xpPerHR + "HR", 12, 227);
-        g2.drawString("Leveling in: " + formatTime(xpTillLevel/xpPerHR), 12, 242);
+        //g2.drawString("Leveling in: " + formatTime((long)(xpTillLevel * 3600000L)/(xpPerHR * 3600000L)), 12, 242);
     }
 
 
