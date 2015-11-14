@@ -54,14 +54,12 @@ public class Bank extends Task<ClientContext>
                 ctx.bank.depositInventory();
                 Condition.sleep(rng.nextInt(750, 1000));
             } else {
-                if(ctx.bank.select().id(runeEs).count() != 0)
-                {
-                    ctx.bank.withdraw(runeEs, 0);
-                    Condition.sleep(rng.nextInt(750, 1000));
-                }
-                if(usingTalisman)
-                {
+                /*if(usingTalisman) {
                     ctx.bank.withdraw(talismanID, 1);
+                    Condition.sleep(rng.nextInt(750, 1000));
+                } */
+                if(ctx.bank.select().id(runeEs).count() != 0) {
+                    ctx.bank.withdraw(runeEs, 0);
                     Condition.sleep(rng.nextInt(750, 1000));
                 }
             }

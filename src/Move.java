@@ -67,9 +67,8 @@ public class Move extends Task<ClientContext>
     public boolean activate()
     {
         if(ctx.game.tab() != Game.Tab.INVENTORY)
-        {
             ctx.game.tab(Game.Tab.INVENTORY);
-        }
+
         banking = (ctx.inventory.select().id(runeEs).count() >= 1 ? false : true);
         if(ctx.movement.distance(bodEnd) == -1 && ctx.movement.distance(firEnd) == -1 && ctx.movement.distance(airEnd) == -1 && ctx.movement.distance(earEnd) == -1 && !(banking && ctx.objects.select().id(bankIDs).nearest().poll().inViewport() && ctx.movement.distance(ctx.objects.select().id(bankIDs).nearest().poll()) <= 5)) {
             System.out.println("Going to move!");

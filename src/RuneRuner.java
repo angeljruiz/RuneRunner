@@ -24,11 +24,9 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
     private Move mover = new Move(ctx);
     private Bank banker = new Bank(ctx);
 
-    private long startTime;
     private int startExp;
-    private int currentTalismain = -1;
 
-    private int[] talismainIDs = { -1 };
+    private int[] talismainIDs = { 1438, 1440, 1442, 1446};
 
     GUI gui = new GUI();
 
@@ -72,17 +70,13 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
         g2.setColor(Color.WHITE);
         g2.drawString("Run time: " + formatTime(getRuntime()), 15, 215);
         g2.drawString("Exp gained: "+ xpGained + "/"+ xpPerHR + "HR", 15, 230);
-        //g2.drawString("Leveling in: " + formatTime((long)(xpTillLevel * 3600000L)/(xpPerHR * 3600000L)), 12, 242);
     }
 
 
     @Override
     public void start()
     {
-            startTime = System.currentTimeMillis();
             startExp = ctx.skills.experience(20);
-            if(!ctx.inventory.select().id(talismainIDs).isEmpty())
-                banker.setTalisman(currentTalismain);
             System.out.println("Script Started");
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
@@ -105,9 +99,13 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
                 }
             }
         } else if(gui.isDone()) {
+            int area = gui.getArea();
             init = true;
-            crafter.setArea(gui.getArea());
-            mover.setArea(gui.getArea());
+            crafter.setArea(area);
+            mover.setArea(area);
+            if(!ctx.inventory.select().id(talismainIDs).isEmpty())
+                banker.setTalisman(talismainIDs[area]);
+
             taskList.addAll(Arrays.asList(crafter, mover, banker));
         }
     }
