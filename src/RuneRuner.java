@@ -26,7 +26,7 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
 
     private int startExp;
 
-    private int[] talismainIDs = { 1438, 1440, 1442, 1446};
+    private int[] talismanIDs = { 1438, 1440, 1442, 1446};
 
     GUI gui = new GUI();
 
@@ -103,8 +103,8 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
             init = true;
             crafter.setArea(area);
             mover.setArea(area);
-            if(!ctx.inventory.select().id(talismainIDs).isEmpty())
-                banker.setTalisman(talismainIDs[area]);
+            if(!ctx.inventory.select().id(talismanIDs).isEmpty())
+                banker.setTalisman(talismanIDs[area]);
 
             taskList.addAll(Arrays.asList(crafter, mover, banker));
         }
