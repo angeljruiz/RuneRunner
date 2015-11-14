@@ -89,6 +89,7 @@ public class Move extends Task<ClientContext>
         {
             if(ctx.movement.distance(ctx.movement.destination()) <= 5) {
                 if (!currentPath.traverse()) {
+                    System.out.println("Guessing");
                     ctx.movement.step(currentAreaEnd);
                     Condition.sleep(rng.nextInt(250, 550));
                 }
