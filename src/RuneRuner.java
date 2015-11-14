@@ -74,10 +74,12 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
         g2.drawRect(10, 200, 160, 18);
         g2.setColor(Color.WHITE);
         g2.drawString("RuneRunner", 15, 215);
-        g2.drawString("Runtime: " + formatTime(getRuntime()), 15, 230);
-        g2.drawString("Exp: "+ xpGained + " ("+ xpPerHR + "/hr)", 15, 245);
-        g2.drawString("Runes: " + banker.getCrafted(), 15, 260);
-        g2.drawString("Till level: " + formatTime((long)(xpTillLevel*3600000D)/xpPerHR), 15, 275);
+        g2.drawString("Runtime: " + formatTime(getRuntime()), 15, 235);
+        g2.drawString("Exp: "+ xpGained + " ("+ xpPerHR + "/hr)", 15, 250);
+        g2.drawString("Runes: " + banker.getCrafted(), 15, 265);
+        if(xpPerHR != 0)
+            g2.drawString("Till level: " + formatTime((long)(xpTillLevel*3600000D)/xpPerHR), 15, 280);
+        else g2.drawString("Till level: -", 15, 280);
     }
 
 
