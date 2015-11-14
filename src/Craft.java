@@ -83,7 +83,7 @@ public class Craft extends Task<ClientContext>
         if(!ctx.inventory.select().id(Resources.runeEs).isEmpty())
         {
             System.out.println("Crafting");
-            ctx.objects.select().id(currentAltar).poll().interact("Craft");
+            if(ctx.objects.select().id(currentAltar).poll().interact("Craft"))
             Condition.wait(new Callable<Boolean>() {
                 @Override
                 public Boolean call() throws Exception {
@@ -100,7 +100,7 @@ public class Craft extends Task<ClientContext>
         if(ctx.inventory.select().id(Resources.runeEs).count() == 0)
         {
             System.out.println("Using portal");
-            ctx.objects.select().id(currentPortal).poll().interact("Use");
+            if(ctx.objects.select().id(currentPortal).poll().interact("Use"))
             Condition.wait(new Callable<Boolean>() {
                 @Override
                 public Boolean call() throws Exception {

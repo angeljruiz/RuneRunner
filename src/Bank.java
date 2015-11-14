@@ -46,8 +46,8 @@ public class Bank extends Task<ClientContext>
         }
         if(!ctx.bank.opened())
         {
-            ctx.objects.select().id(Resources.bankIDs).nearest().poll().interact("Bank");
-            Condition.wait(new Callable<Boolean>() {
+            if(ctx.objects.select().id(Resources.bankIDs).nearest().poll().interact("Bank"))
+                Condition.wait(new Callable<Boolean>() {
                 @Override
                 public Boolean call() throws Exception {
                     return ctx.bank.opened();
@@ -56,35 +56,35 @@ public class Bank extends Task<ClientContext>
         } else {
             if(!ctx.inventory.select().id(Resources.runeIDs).isEmpty())
             {
-                for (int ID : Resources.runeIDs) {
+                for (final int ID : Resources.runeIDs) {
                     if(!ctx.inventory.select().id(ID).isEmpty()) {
-                        ctx.bank.deposit(ID, 0);
+                        if(ctx.bank.deposit(ID, 0))
+                            Condition.wait(new Callable<Boolean>() {
+                                @Override
+                                public Boolean call() throws Exception {
+                                    return ctx.inventory.select().id(ID).isEmpty();
+                                }
+                            }, 250, 6);
                     }
                 }
-                Condition.wait(new Callable<Boolean>() {
-                    @Override
-                    public Boolean call() throws Exception {
-                        return ctx.inventory.select().id(Resources.runeIDs).isEmpty();
-                    }
-                }, 250, 6);
             } else {
                 if(usingTalisman && ctx.inventory.select().id(talismanID).isEmpty()) {
-                    ctx.bank.withdraw(talismanID, 1);
-                    Condition.wait(new Callable<Boolean>() {
-                        @Override
-                        public Boolean call() throws Exception {
-                            return !ctx.inventory.select().id(talismanID).isEmpty();
-                        }
-                    }, 250, 6);
+                    if(ctx.bank.withdraw(talismanID, 1))
+                        Condition.wait(new Callable<Boolean>() {
+                            @Override
+                            public Boolean call() throws Exception {
+                                return !ctx.inventory.select().id(talismanID).isEmpty();
+                            }
+                        }, 250, 6);
                 }
                 if(ctx.bank.select().id(Resources.runeEs).count() != 0) {
-                    ctx.bank.withdraw(Resources.runeEs, 0);
-                    Condition.wait(new Callable<Boolean>() {
-                        @Override
-                        public Boolean call() throws Exception {
-                            return !ctx.inventory.select().id(Resources.runeEs).isEmpty();
-                        }
-                    }, 250, 6);
+                    if(ctx.bank.withdraw(Resources.runeEs, 0))
+                        Condition.wait(new Callable<Boolean>() {
+                            @Override
+                            public Boolean call() throws Exception {
+                                return !ctx.inventory.select().id(Resources.runeEs).isEmpty();
+                            }
+                        }, 250, 6);
                 }
             }
         }
