@@ -10,7 +10,6 @@ public class Bank extends Task<ClientContext>
     private int runeEs = 1436;
     private int[] runeIDs = { 556, 557, 554, 559 };
     private int[] bankIDs = { 24101, 11748, 3194, 11744, 3193 };
-    private int craftedRunes = 0;
     private Random rng = new Random();
     private int talismanID = -1;
     private boolean usingTalisman;
@@ -26,7 +25,6 @@ public class Bank extends Task<ClientContext>
         talismanID = ID;
     }
 
-    public int getCrafted() { return craftedRunes; }
 
     @Override
     public boolean activate()
@@ -57,7 +55,6 @@ public class Bank extends Task<ClientContext>
             {
                 for (int ID : runeIDs) {
                     if(!ctx.inventory.select().id(ID).isEmpty()) {
-                        craftedRunes += ctx.inventory.select().id(ID).poll().stackSize();
                         ctx.bank.deposit(ID, 0);
                     }
                 }

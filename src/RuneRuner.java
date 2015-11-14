@@ -1,6 +1,4 @@
-import org.powerbot.script.PaintListener;
-import org.powerbot.script.PollingScript;
-import org.powerbot.script.Script;
+import org.powerbot.script.*;
 import org.powerbot.script.rt4.ClientContext;
 
 import javax.imageio.ImageIO;
@@ -17,16 +15,19 @@ import java.util.List;
         name = "RuneRunner",
         description = "Runs runes!"
 )
-public class RuneRuner extends PollingScript<ClientContext> implements PaintListener {
+public class RuneRuner extends PollingScript<ClientContext> implements PaintListener, MessageListener {
     private List<Task> taskList = new ArrayList<Task>();
     private boolean init = false;
     private Craft crafter = new Craft(ctx);
     private Move mover = new Move(ctx);
     private Bank banker = new Bank(ctx);
+    private int runesCrafted = 0;
 
     private int startExp;
 
     private int[] talismanIDs = { 1438, 1440, 1442, 1446};
+    private int[] runeIDs = { 556, 557, 554, 559 };
+
 
     GUI gui = new GUI();
 
@@ -56,6 +57,13 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
     public int perHour(int gained) { return ((int) ((gained) * 3600000D / getRuntime()));}
 
 
+    @Override
+    public void messaged(MessageEvent e){
+        if(e.text().contains("You bind"))
+        {
+            runesCrafted += ctx.inventory.select().id(runeIDs).poll().stackSize();
+        }
+    }
 
     @Override
     public void repaint(Graphics g)
@@ -76,7 +84,7 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
         g2.drawString("RuneRunner", 15, 215);
         g2.drawString("Runtime: " + formatTime(getRuntime()), 15, 235);
         g2.drawString("Exp: "+ xpGained + " ("+ xpPerHR + "/hr)", 15, 250);
-        g2.drawString("Runes: " + banker.getCrafted(), 15, 265);
+        g2.drawString("Runes: " + runesCrafted, 15, 265);
         if(xpPerHR != 0)
             g2.drawString("Till level: " + formatTime((long)(xpTillLevel*3600000D)/xpPerHR), 15, 280);
         else g2.drawString("Till level: -", 15, 280);
