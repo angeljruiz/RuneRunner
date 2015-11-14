@@ -84,12 +84,12 @@ public class Craft extends Task<ClientContext>
         {
             System.out.println("Crafting");
             if(ctx.objects.select().id(currentAltar).poll().interact("Craft"))
-            Condition.wait(new Callable<Boolean>() {
-                @Override
-                public Boolean call() throws Exception {
-                    return !ctx.inventory.select().id(Resources.runeIDs).isEmpty();
-                }
-            }, 250, 6);
+                Condition.wait(new Callable<Boolean>() {
+                    @Override
+                    public Boolean call() throws Exception {
+                        return !ctx.inventory.select().id(Resources.runeIDs).isEmpty();
+                    }
+                }, 250, 6);
         }
         if(ctx.movement.distance(currentPortalTile) > 5 && ctx.inventory.select().id(Resources.runeEs).isEmpty())
         {

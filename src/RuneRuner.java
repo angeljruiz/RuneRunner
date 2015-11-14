@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -79,11 +80,9 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
         g2.setColor(Color.WHITE);
         g2.drawString("RuneRunner", 15, 215);
         g2.drawString("Runtime: " + formatTime(getRuntime()), 15, 235);
-        g2.drawString("Exp: "+ xpGained + " ("+ xpPerHR + "/hr)", 15, 250);
-        g2.drawString("Runes: " + runesCrafted + " (" + perHour(runesCrafted) + "/hr)", 15, 265);
-        if(xpPerHR != 0)
-            g2.drawString("Till level: " + formatTime((long)(xpTillLevel*3600000D)/xpPerHR), 15, 280);
-        else g2.drawString("Till level: -", 15, 280);
+        g2.drawString("Exp: "+ xpGained + " ("+ NumberFormat.getIntegerInstance().format(xpPerHR) + "/hr)", 15, 250);
+        g2.drawString("Runes: " + runesCrafted + " (" + NumberFormat.getIntegerInstance().format(perHour(runesCrafted)) + "/hr)", 15, 265);
+        g2.drawString("Till level: " + (xpPerHR != 0 ? ((long)(xpTillLevel*3600000D)/xpPerHR) : ""), 15, 280);
     }
 
 
