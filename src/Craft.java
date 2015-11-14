@@ -2,6 +2,8 @@ import org.powerbot.script.Condition;
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt4.ClientContext;
 
+import java.util.concurrent.Callable;
+
 /**
  * Created by Angel on 11/8/2015.
  */
@@ -82,7 +84,12 @@ public class Craft extends Task<ClientContext>
         {
             System.out.println("Crafting");
             ctx.objects.select().id(currentAltar).poll().interact("Craft");
-            Condition.sleep(Resources.rng.nextInt(1000, 1500));
+            Condition.wait(new Callable<Boolean>() {
+                @Override
+                public Boolean call() throws Exception {
+                    return !ctx.inventory.select().id(Resources.runeIDs).isEmpty();
+                }
+            }, 250, 6);
         }
         if(ctx.movement.distance(currentPortalTile) > 5 && ctx.inventory.select().id(Resources.runeEs).isEmpty())
         {
@@ -94,7 +101,12 @@ public class Craft extends Task<ClientContext>
         {
             System.out.println("Using portal");
             ctx.objects.select().id(currentPortal).poll().interact("Use");
-            Condition.sleep(Resources.rng.nextInt(1000, 1500));
+            Condition.wait(new Callable<Boolean>() {
+                @Override
+                public Boolean call() throws Exception {
+                    return ctx.movement.distance(currentPortalTile) != -1;
+                }
+            }, 250, 6);
         }
     }
 }

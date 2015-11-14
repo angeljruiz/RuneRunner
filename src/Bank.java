@@ -1,6 +1,8 @@
 import org.powerbot.script.Condition;
 import org.powerbot.script.rt4.ClientContext;
 
+import java.util.concurrent.Callable;
+
 /**
  * Created by Angel on 11/8/2015.
  */
@@ -36,15 +38,20 @@ public class Bank extends Task<ClientContext>
     @Override
     public void execute()
     {
-        if(ctx.objects.select().id(3193).nearest().poll().valid())
+        if(ctx.objects.select().id(Resources.bankIDs[4]).nearest().poll().valid())//Closed chest
         {
-            ctx.objects.select().id(3193).nearest().poll().interact("Open");
-            Condition.sleep(Resources.rng.nextInt(750, 1000));
+            ctx.objects.select().id(Resources.bankIDs[4]).nearest().poll().interact("Open");
+            Condition.sleep(Resources.rng.nextInt(500, 750));
         }
         if(!ctx.bank.opened())
         {
             ctx.objects.select().id(Resources.bankIDs).nearest().poll().interact("Bank");
-            Condition.sleep(Resources.rng.nextInt(750, 1000));
+            Condition.wait(new Callable<Boolean>() {
+                @Override
+                public Boolean call() throws Exception {
+                    return ctx.bank.opened();
+                }
+            }, 250, 6);
         } else {
             if(!ctx.inventory.select().id(Resources.runeIDs).isEmpty())
             {
@@ -53,15 +60,30 @@ public class Bank extends Task<ClientContext>
                         ctx.bank.deposit(ID, 0);
                     }
                 }
-                Condition.sleep(Resources.rng.nextInt(750, 1000));
+                Condition.wait(new Callable<Boolean>() {
+                    @Override
+                    public Boolean call() throws Exception {
+                        return ctx.inventory.select().id(Resources.runeIDs).isEmpty();
+                    }
+                }, 250, 6);
             } else {
                 if(usingTalisman && ctx.inventory.select().id(talismanID).isEmpty()) {
                     ctx.bank.withdraw(talismanID, 1);
-                    Condition.sleep(Resources.rng.nextInt(750, 1000));
+                    Condition.wait(new Callable<Boolean>() {
+                        @Override
+                        public Boolean call() throws Exception {
+                            return !ctx.inventory.select().id(talismanID).isEmpty();
+                        }
+                    }, 250, 6);
                 }
                 if(ctx.bank.select().id(Resources.runeEs).count() != 0) {
                     ctx.bank.withdraw(Resources.runeEs, 0);
-                    Condition.sleep(Resources.rng.nextInt(750, 1000));
+                    Condition.wait(new Callable<Boolean>() {
+                        @Override
+                        public Boolean call() throws Exception {
+                            return !ctx.inventory.select().id(Resources.runeEs).isEmpty();
+                        }
+                    }, 250, 6);
                 }
             }
         }
