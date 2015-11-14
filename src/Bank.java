@@ -1,4 +1,5 @@
 import org.powerbot.script.Condition;
+import org.powerbot.script.Random;
 import org.powerbot.script.rt4.ClientContext;
 
 import java.util.concurrent.Callable;
@@ -41,7 +42,7 @@ public class Bank extends Task<ClientContext>
         if(ctx.objects.select().id(Resources.bankIDs[4]).nearest().poll().valid())//Closed chest
         {
             ctx.objects.select().id(Resources.bankIDs[4]).nearest().poll().interact("Open");
-            Condition.sleep(Resources.rng.nextInt(500, 750));
+            Condition.sleep(Random.nextInt(500, 750));
         }
         if(!ctx.bank.opened())
         {

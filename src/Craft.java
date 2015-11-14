@@ -1,4 +1,5 @@
 import org.powerbot.script.Condition;
+import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt4.ClientContext;
 
@@ -72,13 +73,12 @@ public class Craft extends Task<ClientContext>
         {
             System.out.println("Running to altar");
             ctx.movement.step(currentAltarTile);
-            Condition.sleep(Resources.rng.nextInt(1000, 1500));
+            Condition.sleep(Random.nextInt(1000, 1500));
         }
         if(!ctx.objects.select().id(currentAltar).poll().inViewport())
         {
             System.out.println("Turning to altar");
             ctx.camera.turnTo(ctx.objects.select().id(currentAltar).poll());
-            Condition.sleep(Resources.rng.nextInt(1000, 1500));
         }
         if(!ctx.inventory.select().id(Resources.runeEs).isEmpty())
         {
@@ -95,7 +95,7 @@ public class Craft extends Task<ClientContext>
         {
             System.out.println("Walking to portal");
             ctx.movement.step(ctx.objects.select().id(currentPortal).poll());
-            Condition.sleep(Resources.rng.nextInt(1000, 1500));
+            Condition.sleep(Random.nextInt(1000, 1500));
         }
         if(ctx.inventory.select().id(Resources.runeEs).count() == 0)
         {

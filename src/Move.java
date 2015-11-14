@@ -1,4 +1,5 @@
 import org.powerbot.script.Condition;
+import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.Game;
@@ -71,7 +72,7 @@ public class Move extends Task<ClientContext>
     @Override
     public void execute()
     {
-        if(ctx.movement.energyLevel() > Resources.rng.nextInt(15, 30) && !ctx.movement.running())
+        if(ctx.movement.energyLevel() > Random.nextInt(15, 30) && !ctx.movement.running())
             ctx.movement.running(true);
 
         if(!banking && ctx.movement.distance(currentAreaEnd) > 12 || ctx.movement.distance(currentAreaEnd) == -1)
@@ -80,18 +81,17 @@ public class Move extends Task<ClientContext>
                 if (!currentPath.traverse()) {
                     System.out.println("Guessing");
                     ctx.movement.step(currentAreaEnd);
-                    Condition.sleep(Resources.rng.nextInt(250, 550));
+                    Condition.sleep(Random.nextInt(250, 550));
                 }
             }
         } else if(!banking && ctx.movement.distance(currentAreaEnd) <= 12)
         {
             if(!ctx.objects.select().id(currentAltar).poll().inViewport()) {
                 ctx.camera.turnTo(ctx.objects.select().id(currentAltar).poll());
-                Condition.sleep(Resources.rng.nextInt(500, 750));
             }
             if(ctx.movement.distance(currentAreaEnd) <= 6) {
                 ctx.objects.select().id(currentAltar).poll().interact("Enter");
-                Condition.sleep(Resources.rng.nextInt(750, 100));
+                Condition.sleep(Random.nextInt(750, 100));
             } else ctx.movement.step(currentAreaEnd);
         }
         if(banking)
@@ -99,11 +99,11 @@ public class Move extends Task<ClientContext>
             if(ctx.movement.distance(ctx.movement.destination()) <= 5 || ctx.movement.distance(ctx.movement.destination()) == -1) {
                 if(ctx.movement.distance(ctx.objects.select().id(Resources.bankIDs).nearest().poll()) <= 5 && !ctx.objects.select().id(Resources.bankIDs).nearest().poll().inViewport()) {
                     ctx.camera.turnTo(ctx.objects.select().id(Resources.bankIDs).nearest().poll());
-                    Condition.sleep(Resources.rng.nextInt(250, 550));
+                    Condition.sleep(Random.nextInt(250, 550));
                 }
                 if (!currentPathRev.traverse()) {
                     ctx.movement.step(ctx.objects.select().id(Resources.bankIDs).nearest().poll());
-                    Condition.sleep(Resources.rng.nextInt(250, 550));
+                    Condition.sleep(Random.nextInt(250, 550));
                 }
             }
         }
