@@ -8,6 +8,7 @@ import org.powerbot.script.rt4.ClientContext;
 public class Bank extends Task<ClientContext>
 {
     private int runeEs = 1436;
+    private int[] runeIDs = { 556, 557, 554, 559 };
     private int[] bankIDs = { 24101, 11748, 3194, 11744, 3193 };
     private Random rng = new Random();
     private int talismanID = -1;
@@ -49,15 +50,18 @@ public class Bank extends Task<ClientContext>
             ctx.objects.select().id(bankIDs).nearest().poll().interact("Bank");
             Condition.sleep(rng.nextInt(750, 1000));
         } else {
-            if(!ctx.inventory.select().isEmpty())
+            if(!ctx.inventory.select().id(runeIDs).isEmpty())
             {
-                ctx.bank.depositInventory();
+                for (int ID : runeIDs) {
+                    if(!ctx.inventory.select().id(ID).isEmpty())
+                        ctx.bank.deposit(ID, 0);
+                }
                 Condition.sleep(rng.nextInt(750, 1000));
             } else {
-                /*if(usingTalisman) {
+                if(usingTalisman && ctx.inventory.select().id(talismanID).isEmpty()) {
                     ctx.bank.withdraw(talismanID, 1);
                     Condition.sleep(rng.nextInt(750, 1000));
-                } */
+                }
                 if(ctx.bank.select().id(runeEs).count() != 0) {
                     ctx.bank.withdraw(runeEs, 0);
                     Condition.sleep(rng.nextInt(750, 1000));
