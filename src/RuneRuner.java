@@ -66,10 +66,11 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
         int xpGained = (ctx.skills.experience(20) - startExp);
         long xpPerHR = perHour(xpGained);
         int xpTillLevel = ctx.skills.experienceAt(ctx.skills.level(20) + 1) - ctx.skills.experience(20);
-        g2.fillRect(10, 200, 150, 39);
+        g2.fillRect(10, 200, 160, 56);
         g2.setColor(Color.WHITE);
-        g2.drawString("Run time: " + formatTime(getRuntime()), 15, 215);
-        g2.drawString("Exp gained: "+ xpGained + "/"+ xpPerHR + "HR", 15, 230);
+        g2.drawString("Runtime: " + formatTime(getRuntime()), 15, 215);
+        g2.drawString("Exp: "+ xpGained + " ("+ xpPerHR + "/hr)", 15, 230);
+        g2.drawString("Runes: " + banker.getCrafted(), 15, 245);
     }
 
 
