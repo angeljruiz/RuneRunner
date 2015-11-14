@@ -62,15 +62,17 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
     {
         Graphics2D g2 = (Graphics2D)g;
         Color gray = new Color(128, 128, 128, 190);
-        g2.setColor(gray);
         int xpGained = (ctx.skills.experience(20) - startExp);
         long xpPerHR = perHour(xpGained);
         int xpTillLevel = ctx.skills.experienceAt(ctx.skills.level(20) + 1) - ctx.skills.experience(20);
-        g2.fillRect(10, 200, 160, 56);
+
+        g2.setColor(gray);
+        g2.fillRect(10, 200, 160, 70);
         g2.setColor(Color.WHITE);
         g2.drawString("Runtime: " + formatTime(getRuntime()), 15, 215);
         g2.drawString("Exp: "+ xpGained + " ("+ xpPerHR + "/hr)", 15, 230);
         g2.drawString("Runes: " + banker.getCrafted(), 15, 245);
+        g2.drawString("Till level: " + formatTime((long)(xpTillLevel*3600000D)/xpPerHR), 15, 260);
     }
 
 
@@ -107,7 +109,7 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
             if(!ctx.inventory.select().id(talismanIDs).isEmpty())
                 banker.setTalisman(talismanIDs[area]);
 
-            taskList.addAll(Arrays.asList(crafter, mover, banker));
+            taskList.addAll(Arrays.asList(crafter, mover, banker, new Antiban(ctx)));
         }
     }
 
