@@ -15,12 +15,6 @@ public class Craft extends Task<ClientContext>
     private int currentAltar;
     private int currentPortal;
 
-    /*Condition.wait(new Callable<Boolean>() {
-    @Override
-    public Boolean call() throws Exception {
-        return !ctx.players.local().inCombat();
-    }}, 500, 10);*/
-
     public Craft(ClientContext ctx) {
         super(ctx);
     }
@@ -101,11 +95,11 @@ public class Craft extends Task<ClientContext>
         {
             System.out.println("Using portal");
             if(ctx.objects.select().id(currentPortal).poll().interact("Use"))
-            Condition.wait(new Callable<Boolean>() {
-                @Override
-                public Boolean call() throws Exception {
-                    return ctx.movement.distance(currentPortalTile) != -1;
-                }
+                Condition.wait(new Callable<Boolean>() {
+                    @Override
+                    public Boolean call() throws Exception {
+                        return ctx.movement.distance(currentPortalTile) != -1;
+                    }
             }, 250, 6);
         }
     }

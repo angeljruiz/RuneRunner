@@ -5,6 +5,8 @@ import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.Game;
 import org.powerbot.script.rt4.TilePath;
 
+import java.util.concurrent.Callable;
+
 
 /**
  * Created by Angel on 11/8/2015.
@@ -75,15 +77,18 @@ public class Move extends Task<ClientContext>
         if(ctx.movement.energyLevel() > Random.nextInt(15, 30) && !ctx.movement.running())
             ctx.movement.running(true);
 
-        if(!banking && ctx.movement.distance(currentAreaEnd) > 12 || ctx.movement.distance(currentAreaEnd) == -1)
+        if(!banking && ctx.movement.distance(currentAreaEnd) > 12)
         {
-            if(ctx.movement.distance(ctx.movement.destination()) <= 5) {
-                if (!currentPath.traverse()) {
-                    System.out.println("Guessing");
-                    ctx.movement.step(currentAreaEnd);
-                    Condition.sleep(Random.nextInt(250, 550));
-                }
+            if (!currentPath.traverse()) {
+                System.out.println("Guessing");
+                ctx.movement.step(currentPath.next());
             }
+            Condition.wait(new Callable<Boolean>() {
+                @Override
+                public Boolean call() throws Exception {
+                    return ctx.movement.distance(ctx.movement.destination()) <= 5;
+                }
+            }, 150, 9);
         } else if(!banking && ctx.movement.distance(currentAreaEnd) <= 12)
         {
             if(!ctx.objects.select().id(currentAltar).poll().inViewport()) {
@@ -92,19 +97,32 @@ public class Move extends Task<ClientContext>
             if(ctx.movement.distance(currentAreaEnd) <= 6) {
                 ctx.objects.select().id(currentAltar).poll().interact("Enter");
                 Condition.sleep(Random.nextInt(750, 100));
-            } else ctx.movement.step(currentAreaEnd);
+            } else {
+                ctx.movement.step(currentAreaEnd);
+                Condition.wait(new Callable<Boolean>() {
+                    @Override
+                    public Boolean call() throws Exception {
+                        return ctx.movement.distance(ctx.movement.destination()) <= 5;
+                    }
+                }, 150, 9);
+            }
         }
         if(banking)
         {
             if(ctx.movement.distance(ctx.movement.destination()) <= 5 || ctx.movement.distance(ctx.movement.destination()) == -1) {
-                if(ctx.movement.distance(ctx.objects.select().id(Resources.bankIDs).nearest().poll()) <= 5 && !ctx.objects.select().id(Resources.bankIDs).nearest().poll().inViewport()) {
+                if(ctx.movement.distance(ctx.objects.select().id(Resources.bankIDs).nearest().poll()) <= 3 && !ctx.objects.select().id(Resources.bankIDs).nearest().poll().inViewport()) {
                     ctx.camera.turnTo(ctx.objects.select().id(Resources.bankIDs).nearest().poll());
                     Condition.sleep(Random.nextInt(250, 550));
                 }
                 if (!currentPathRev.traverse()) {
                     ctx.movement.step(ctx.objects.select().id(Resources.bankIDs).nearest().poll());
-                    Condition.sleep(Random.nextInt(250, 550));
                 }
+                Condition.wait(new Callable<Boolean>() {
+                    @Override
+                    public Boolean call() throws Exception {
+                        return ctx.movement.distance(ctx.movement.destination()) <= 5;
+                    }
+                }, 150, 9);
             }
         }
     }
