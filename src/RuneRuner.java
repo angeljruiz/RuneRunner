@@ -25,10 +25,6 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
 
     private int startExp;
 
-    private int[] talismanIDs = { 1438, 1440, 1442, 1446};
-    private int[] runeIDs = { 556, 557, 554, 559 };
-
-
     GUI gui = new GUI();
 
     public static BufferedImage loadAndSaveImage(PollingScript script, String url, String imageName) { //Thanks Robert G
@@ -37,7 +33,7 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
             if (!file.exists()) {
                 final BufferedImage img = script.downloadImage(url);
                 if (img != null && img.getWidth() > 1 && img.getHeight() > 1) {
-                    ImageIO.write((BufferedImage)img, "png", file);
+                    ImageIO.write(img, "png", file);
                     return img;
                 }
             } else {
@@ -61,7 +57,7 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
     public void messaged(MessageEvent e){
         if(e.text().contains("You bind"))
         {
-            runesCrafted += ctx.inventory.select().id(runeIDs).poll().stackSize();
+            runesCrafted += ctx.inventory.select().id(Resources.runeIDs).poll().stackSize();
         }
     }
 
@@ -121,8 +117,8 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
             init = true;
             crafter.setArea(area);
             mover.setArea(area);
-            if(!ctx.inventory.select().id(talismanIDs).isEmpty())
-                banker.setTalisman(talismanIDs[area]);
+            if(!ctx.inventory.select().id(Resources.talismanIDs).isEmpty())
+                banker.setTalisman(Resources.talismanIDs[area]);
 
             taskList.addAll(Arrays.asList(crafter, mover, banker, new Antiban(ctx)));
         }

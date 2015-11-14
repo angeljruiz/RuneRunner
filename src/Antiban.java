@@ -1,13 +1,9 @@
-import org.powerbot.script.Random;
 import org.powerbot.script.rt4.ClientContext;
 
 /**
  * Created by Angel on 11/13/2015.
  */
 public class Antiban extends Task<ClientContext> {
-    private int[] NPCs = { 6748 };
-
-    Random rng = new Random();
 
     public Antiban(ClientContext ctx) { super(ctx); }
 

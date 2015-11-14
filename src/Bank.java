@@ -1,5 +1,4 @@
 import org.powerbot.script.Condition;
-import org.powerbot.script.Random;
 import org.powerbot.script.rt4.ClientContext;
 
 /**
@@ -7,10 +6,6 @@ import org.powerbot.script.rt4.ClientContext;
  */
 public class Bank extends Task<ClientContext>
 {
-    private int runeEs = 1436;
-    private int[] runeIDs = { 556, 557, 554, 559 };
-    private int[] bankIDs = { 24101, 11748, 3194, 11744, 3193 };
-    private Random rng = new Random();
     private int talismanID = -1;
     private boolean usingTalisman;
 
@@ -30,7 +25,7 @@ public class Bank extends Task<ClientContext>
     public boolean activate()
     {
 
-        if(ctx.inventory.select().id(runeEs).count() == 0 && ctx.objects.select().id(bankIDs).nearest().poll().inViewport())
+        if(ctx.inventory.select().id(Resources.runeEs).count() == 0 && ctx.objects.select().id(Resources.bankIDs).nearest().poll().inViewport())
         {
             System.out.println("Banking!");
             return true;
@@ -44,29 +39,29 @@ public class Bank extends Task<ClientContext>
         if(ctx.objects.select().id(3193).nearest().poll().valid())
         {
             ctx.objects.select().id(3193).nearest().poll().interact("Open");
-            Condition.sleep(rng.nextInt(750, 1000));
+            Condition.sleep(Resources.rng.nextInt(750, 1000));
         }
         if(!ctx.bank.opened())
         {
-            ctx.objects.select().id(bankIDs).nearest().poll().interact("Bank");
-            Condition.sleep(rng.nextInt(750, 1000));
+            ctx.objects.select().id(Resources.bankIDs).nearest().poll().interact("Bank");
+            Condition.sleep(Resources.rng.nextInt(750, 1000));
         } else {
-            if(!ctx.inventory.select().id(runeIDs).isEmpty())
+            if(!ctx.inventory.select().id(Resources.runeIDs).isEmpty())
             {
-                for (int ID : runeIDs) {
+                for (int ID : Resources.runeIDs) {
                     if(!ctx.inventory.select().id(ID).isEmpty()) {
                         ctx.bank.deposit(ID, 0);
                     }
                 }
-                Condition.sleep(rng.nextInt(750, 1000));
+                Condition.sleep(Resources.rng.nextInt(750, 1000));
             } else {
                 if(usingTalisman && ctx.inventory.select().id(talismanID).isEmpty()) {
                     ctx.bank.withdraw(talismanID, 1);
-                    Condition.sleep(rng.nextInt(750, 1000));
+                    Condition.sleep(Resources.rng.nextInt(750, 1000));
                 }
-                if(ctx.bank.select().id(runeEs).count() != 0) {
-                    ctx.bank.withdraw(runeEs, 0);
-                    Condition.sleep(rng.nextInt(750, 1000));
+                if(ctx.bank.select().id(Resources.runeEs).count() != 0) {
+                    ctx.bank.withdraw(Resources.runeEs, 0);
+                    Condition.sleep(Resources.rng.nextInt(750, 1000));
                 }
             }
         }
