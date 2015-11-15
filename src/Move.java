@@ -63,8 +63,18 @@ public class Move extends Task<ClientContext>
 
         banking = (ctx.inventory.select().id(Resources.runeEs).count() >= 1 ? false : true);
         if(ctx.movement.distance(Resources.bodEnd) == -1 && ctx.movement.distance(Resources.firEnd) == -1 && ctx.movement.distance(Resources.airEnd) == -1 && ctx.movement.distance(Resources.earEnd) == -1) {
-            if(banking && ctx.objects.select().id(Resources.bankIDs).nearest().poll().inViewport() && ctx.movement.distance(ctx.objects.select().id(Resources.bankIDs).nearest().poll()) <= 3)
+            if(banking && ctx.movement.distance(ctx.objects.select().id(Resources.bankIDs).nearest().poll(), ctx.players.local()) != -1 && ctx.movement.distance(ctx.objects.select().id(Resources.bankIDs).nearest().poll(), ctx.players.local()) <= 5) {
+                if (!ctx.objects.select().id(Resources.bankIDs).nearest().poll().inViewport()) {
+                    ctx.camera.turnTo(ctx.objects.select().id(Resources.bankIDs).nearest().poll());
+                    Condition.wait(new Callable<Boolean>() {
+                        @Override
+                        public Boolean call() throws Exception {
+                            return ctx.objects.select().id(Resources.bankIDs).nearest().poll().inViewport();
+                        }
+                    }, 250, 6);
+                }
                 return false;
+            }
             System.out.println("Going to move!");
             return true;
         }

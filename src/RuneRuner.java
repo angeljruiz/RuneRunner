@@ -51,7 +51,7 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
         return (h < 10 ? "0" + h : h) + ":" + (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
     }
 
-    public int perHour(int gained) { return ((int) ((gained) * 3600000D / getRuntime()));}
+    public int perHour(int gained) { return ((int) ((gained) * 3600000D / getTotalRuntime()));}
 
 
     @Override
@@ -69,7 +69,6 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
         Color gray = new Color(128, 128, 128, 190);
         Color black = new Color(255, 255, 255, 100);
         int xpGained = (ctx.skills.experience(20) - startExp);
-        long xpPerHR = perHour(xpGained);
         int xpTillLevel = ctx.skills.experienceAt(ctx.skills.level(20) + 1) - ctx.skills.experience(20);
 
         g2.setColor(gray);
@@ -79,10 +78,10 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
         g2.drawRect(10, 200, 160, 18);
         g2.setColor(Color.WHITE);
         g2.drawString("RuneRunner", 15, 215);
-        g2.drawString("Runtime: " + formatTime(getRuntime()), 15, 235);
-        g2.drawString("Exp: "+ xpGained + " ("+ NumberFormat.getIntegerInstance().format(xpPerHR) + "/hr)", 15, 250);
+        g2.drawString("Runtime: " + formatTime(getTotalRuntime()), 15, 235);
+        g2.drawString("Exp: "+ xpGained + " ("+ NumberFormat.getIntegerInstance().format(perHour(xpGained)) + "/hr)", 15, 250);
         g2.drawString("Runes: " + runesCrafted + " (" + NumberFormat.getIntegerInstance().format(perHour(runesCrafted)) + "/hr)", 15, 265);
-        g2.drawString("Till level: " + (xpPerHR != 0 ? formatTime((long)(xpTillLevel*3600000D)/xpPerHR) : ""), 15, 280);
+        g2.drawString("Till level: " + (perHour(xpGained) != 0 ? formatTime((long)(xpTillLevel*3600000D)/perHour(xpGained)) : ""), 15, 280);
     }
 
 
