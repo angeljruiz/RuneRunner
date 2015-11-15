@@ -28,6 +28,7 @@ public class RuneRuner extends PollingScript<ClientContext> implements PaintList
 
     GUI gui = new GUI();
 
+
     public static BufferedImage loadAndSaveImage(PollingScript script, String url, String imageName) { //Thanks Robert G
         final File file = new File(script.getStorageDirectory(), imageName);
         try {

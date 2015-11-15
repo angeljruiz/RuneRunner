@@ -35,9 +35,9 @@ public class Move extends Task<ClientContext>
         if(ctx.game.tab() != Game.Tab.INVENTORY)
             ctx.game.tab(Game.Tab.INVENTORY);
 
-        banking = (ctx.inventory.select().id(Resources.runeEs).count() >= 1 ? false : true);
+        banking = (ctx.inventory.select().id(Resources.runeEs).count() < 1);
         if(ctx.objects.select().id(Resources.altarIDs).isEmpty()) {
-            if(banking && ctx.movement.distance(ctx.objects.select().id(Resources.bankIDs).nearest().poll(), ctx.players.local()) != -1 && ctx.movement.distance(ctx.objects.select().id(Resources.bankIDs).nearest().poll(), ctx.players.local()) <= 5) {
+            if(banking && !ctx.objects.select().id(Resources.bankIDs).within(5).isEmpty()) {
                 if (!ctx.objects.select().id(Resources.bankIDs).nearest().poll().inViewport()) {
                     ctx.camera.turnTo(ctx.objects.select().id(Resources.bankIDs).nearest().poll());
                     Condition.wait(new Callable<Boolean>() {
@@ -63,6 +63,8 @@ public class Move extends Task<ClientContext>
 
         if(!banking && ctx.objects.select().id(currentAltar).within(12).isEmpty())
         {
+            if(!currentPath.valid())
+                return;
             if(!currentPath.traverse())
                 ctx.movement.step(currentPath.next());
             Condition.wait(new Callable<Boolean>() {
@@ -76,7 +78,7 @@ public class Move extends Task<ClientContext>
             if(!ctx.objects.select().id(currentAltar).poll().inViewport()) {
                 ctx.camera.turnTo(ctx.objects.select().id(currentAltar).poll());
             }
-            if(!ctx.objects.select().id(currentAltar).within(6).isEmpty()) {
+            if(!ctx.objects.select().id(currentAltar).within(3).isEmpty()) {
                 ctx.objects.select().id(currentAltar).poll().interact("Enter");
                 Condition.wait(new Callable<Boolean>() {
                     @Override
@@ -84,6 +86,7 @@ public class Move extends Task<ClientContext>
                         return !ctx.objects.select().id(Resources.altarIDs).isEmpty();
                     }
                 }, 250, 6);
+                return;
             } else {
                 ctx.movement.step(ctx.objects.select().id(currentAltar).poll());
                 Condition.wait(new Callable<Boolean>() {
@@ -96,6 +99,8 @@ public class Move extends Task<ClientContext>
         }
         if(banking && ctx.objects.select().id(Resources.bankIDs).within(10).isEmpty())
         {
+            if(!currentPathRev.valid())
+                return;
             if(!currentPathRev.traverse())
                 ctx.movement.step(currentPathRev.next());
             Condition.wait(new Callable<Boolean>() {
@@ -104,9 +109,9 @@ public class Move extends Task<ClientContext>
                     return (ctx.movement.distance(ctx.movement.destination(), ctx.players.local()) <= 5 && ctx.movement.distance(ctx.movement.destination(), ctx.players.local()) != -1);
                 }
             }, 150, 9);
-        } else if(banking && !ctx.objects.select().id(Resources.bankIDs).within(12).isEmpty())
+        } else if(banking && !ctx.objects.select().id(Resources.bankIDs).within(10).isEmpty())
         {
-            if(ctx.objects.select().id(Resources.bankIDs).within(5).isEmpty())
+            if(ctx.objects.select().id(Resources.bankIDs).within(7).isEmpty())
             {
                if(!ctx.objects.select().id(Resources.bankIDs).nearest().poll().inViewport())
                    ctx.camera.turnTo(ctx.objects.select().id(Resources.bankIDs).nearest().poll());
