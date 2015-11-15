@@ -63,14 +63,12 @@ public class Move extends Task<ClientContext>
 
         if(!banking && ctx.objects.select().id(currentAltar).within(12).isEmpty())
         {
-            if (!currentPath.traverse()) {
-                System.out.println("Guessing");
+            if(!currentPath.traverse())
                 ctx.movement.step(currentPath.next());
-            }
             Condition.wait(new Callable<Boolean>() {
                 @Override
                 public Boolean call() throws Exception {
-                    return ctx.movement.distance(ctx.movement.destination()) <= 5;
+                    return (ctx.movement.distance(ctx.movement.destination(), ctx.players.local()) <= 5 && ctx.movement.distance(ctx.movement.destination(), ctx.players.local()) != -1);
                 }
             }, 150, 9);
         } else if(!banking && !ctx.objects.select().id(currentAltar).within(12).isEmpty())
@@ -91,25 +89,32 @@ public class Move extends Task<ClientContext>
                 Condition.wait(new Callable<Boolean>() {
                     @Override
                     public Boolean call() throws Exception {
-                        return ctx.movement.distance(ctx.movement.destination()) <= 5;
+                        return (ctx.movement.distance(ctx.movement.destination(), ctx.players.local()) <= 5 && ctx.movement.distance(ctx.movement.destination(), ctx.players.local()) != -1);
                     }
                 }, 150, 9);
             }
         }
-        if(banking)
+        if(banking && ctx.objects.select().id(Resources.bankIDs).within(10).isEmpty())
         {
-            if(ctx.movement.distance(ctx.movement.destination()) <= 5 || ctx.movement.distance(ctx.movement.destination()) == -1) {
-                if(ctx.movement.distance(ctx.objects.select().id(Resources.bankIDs).nearest().poll()) <= 3 && !ctx.objects.select().id(Resources.bankIDs).nearest().poll().inViewport()) {
-                    ctx.camera.turnTo(ctx.objects.select().id(Resources.bankIDs).nearest().poll());
-                    Condition.sleep(Random.nextInt(250, 550));
+            if(!currentPathRev.traverse())
+                ctx.movement.step(currentPathRev.next());
+            Condition.wait(new Callable<Boolean>() {
+                @Override
+                public Boolean call() throws Exception {
+                    return (ctx.movement.distance(ctx.movement.destination(), ctx.players.local()) <= 5 && ctx.movement.distance(ctx.movement.destination(), ctx.players.local()) != -1);
                 }
-                if (!currentPathRev.traverse()) {
-                    ctx.movement.step(ctx.objects.select().id(Resources.bankIDs).nearest().poll());
-                }
+            }, 150, 9);
+        } else if(banking && !ctx.objects.select().id(Resources.bankIDs).within(12).isEmpty())
+        {
+            if(ctx.objects.select().id(Resources.bankIDs).within(5).isEmpty())
+            {
+               if(!ctx.objects.select().id(Resources.bankIDs).nearest().poll().inViewport())
+                   ctx.camera.turnTo(ctx.objects.select().id(Resources.bankIDs).nearest().poll());
+                ctx.movement.step(ctx.objects.select().id(Resources.bankIDs).nearest().poll());
                 Condition.wait(new Callable<Boolean>() {
                     @Override
                     public Boolean call() throws Exception {
-                        return ctx.movement.distance(ctx.movement.destination()) <= 5;
+                        return (ctx.movement.distance(ctx.movement.destination(), ctx.players.local()) <= 5 && ctx.movement.distance(ctx.movement.destination(), ctx.players.local()) != -1);
                     }
                 }, 150, 9);
             }

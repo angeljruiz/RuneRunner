@@ -4,7 +4,7 @@ import org.powerbot.script.Tile;
  * Created by Angel on 11/13/2015.
  */
 public class Resources {
-    private int[] NPCs = { 6748, 322 };
+    private int[] NPCs = { 6748, 322, 5426, 6749 };
     public static int[] runeIDs = { 556, 557, 559 };
     public static int[] talismanIDs = { 1438, 1440, 1442, 1446};
     public static int[] bankIDs = { 24101, 11748, 3194, 11744, 3193 };

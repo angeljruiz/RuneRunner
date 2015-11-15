@@ -41,7 +41,7 @@ public class Craft extends Task<ClientContext>
             Condition.wait(new Callable<Boolean>() {
                 @Override
                 public Boolean call() throws Exception {
-                    return !ctx.objects.select().id(currentAltar).within(5).isEmpty();
+                    return (ctx.movement.distance(ctx.movement.destination(), ctx.players.local()) <= 5 && ctx.movement.distance(ctx.movement.destination(), ctx.players.local()) != -1);
                 }
             }, 250, 6);
         }
@@ -57,7 +57,7 @@ public class Craft extends Task<ClientContext>
                 Condition.wait(new Callable<Boolean>() {
                     @Override
                     public Boolean call() throws Exception {
-                        return !ctx.inventory.select().id(Resources.runeIDs).isEmpty();
+                        return ctx.players.local().animation() == -1;
                     }
                 }, 150, 9);
         }
@@ -68,7 +68,7 @@ public class Craft extends Task<ClientContext>
             Condition.wait(new Callable<Boolean>() {
                 @Override
                 public Boolean call() throws Exception {
-                    return ctx.objects.select().id(currentPortal).within(5).isEmpty();
+                    return (ctx.movement.distance(ctx.movement.destination(), ctx.players.local()) <= 5 && ctx.movement.distance(ctx.movement.destination(), ctx.players.local()) != -1);
                 }
             }, 150, 9);
         }
