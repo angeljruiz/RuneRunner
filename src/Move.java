@@ -19,7 +19,7 @@ public class Move extends Task<ClientContext>
 
     public void setArea(int areaID)
     {
-        currentAltar = Resources.altarIDs[areaID];
+        currentAltar = Resources.ruinIDs[areaID];
         currentPath = ctx.movement.newTilePath(Resources.paths[areaID]);
         currentPathRev = ctx.movement.newTilePath(Resources.paths[areaID]).reverse();
     }
@@ -80,7 +80,12 @@ public class Move extends Task<ClientContext>
             }
             if(!ctx.objects.select().id(currentAltar).within(6).isEmpty()) {
                 ctx.objects.select().id(currentAltar).poll().interact("Enter");
-                Condition.sleep(Random.nextInt(750, 100));
+                Condition.wait(new Callable<Boolean>() {
+                    @Override
+                    public Boolean call() throws Exception {
+                        return !ctx.objects.select().id(Resources.altarIDs).isEmpty();
+                    }
+                }, 250, 6);
             } else {
                 ctx.movement.step(ctx.objects.select().id(currentAltar).poll());
                 Condition.wait(new Callable<Boolean>() {

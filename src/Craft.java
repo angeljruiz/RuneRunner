@@ -1,5 +1,4 @@
 import org.powerbot.script.Condition;
-import org.powerbot.script.Random;
 import org.powerbot.script.rt4.ClientContext;
 
 import java.util.concurrent.Callable;
@@ -39,7 +38,12 @@ public class Craft extends Task<ClientContext>
         {
             System.out.println("Running to altar");
             ctx.movement.step(ctx.objects.select().id(currentAltar).poll());
-            Condition.sleep(Random.nextInt(1000, 1500));
+            Condition.wait(new Callable<Boolean>() {
+                @Override
+                public Boolean call() throws Exception {
+                    return !ctx.objects.select().id(currentAltar).within(5).isEmpty();
+                }
+            }, 250, 6);
         }
         if(!ctx.objects.select().id(currentAltar).poll().inViewport())
         {
@@ -55,13 +59,18 @@ public class Craft extends Task<ClientContext>
                     public Boolean call() throws Exception {
                         return !ctx.inventory.select().id(Resources.runeIDs).isEmpty();
                     }
-                }, 250, 6);
+                }, 150, 9);
         }
         if(ctx.objects.select().id(currentPortal).within(5).isEmpty() && ctx.inventory.select().id(Resources.runeEs).isEmpty())
         {
             System.out.println("Walking to portal");
             ctx.movement.step(ctx.objects.select().id(currentPortal).poll());
-            Condition.sleep(Random.nextInt(1000, 1500));
+            Condition.wait(new Callable<Boolean>() {
+                @Override
+                public Boolean call() throws Exception {
+                    return ctx.objects.select().id(currentPortal).within(5).isEmpty();
+                }
+            }, 150, 9);
         }
         if(ctx.inventory.select().id(Resources.runeEs).count() == 0)
         {
@@ -70,7 +79,7 @@ public class Craft extends Task<ClientContext>
                 Condition.wait(new Callable<Boolean>() {
                     @Override
                     public Boolean call() throws Exception {
-                        return ctx.movement.distance(ctx.objects.select().id(currentPortal).poll()) != -1;
+                        return !ctx.objects.select().id(Resources.ruinIDs).isEmpty();
                     }
             }, 250, 6);
         }
