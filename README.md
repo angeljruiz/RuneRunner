@@ -7,5 +7,5 @@ Supports:
 
 Start anywhere between the bank and altar with a talisman or nothing in inventory
 
-RS3 donations greatly appreciated and needed for membership to continue to develop this script
+RS3 donations greatly appreciated and needed for bonds to continue to develop this script
 
