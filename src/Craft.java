@@ -1,6 +1,5 @@
 import org.powerbot.script.Condition;
 import org.powerbot.script.Random;
-import org.powerbot.script.Tile;
 import org.powerbot.script.rt4.ClientContext;
 
 import java.util.concurrent.Callable;
@@ -10,8 +9,6 @@ import java.util.concurrent.Callable;
  */
 public class Craft extends Task<ClientContext>
 {
-    private Tile currentPortalTile;
-    private Tile currentAltarTile;
     private int currentAltar;
     private int currentPortal;
 
@@ -21,33 +18,8 @@ public class Craft extends Task<ClientContext>
 
     public void setArea(int areaID)
     {
-        switch (areaID)
-        {
-            case 0: //Fally air
-                currentPortalTile = Resources.airPortalTile;
-                currentAltarTile = Resources.airAltarTile;
-                currentAltar = Resources.airAltarID;
-                currentPortal = Resources.airPortal;
-                break;
-            case 1: //Varrock Earth
-                currentPortalTile = Resources.earPortalTile;
-                currentAltarTile = Resources.earAltarTile;
-                currentAltar = Resources.earAltarID;
-                currentPortal = Resources.earPortal;
-                break;
-            case 2: //Al Fire
-                currentPortalTile = Resources.firPortalTile;
-                currentAltarTile = Resources.firAltarTile;
-                currentAltar = Resources.firAltarID;
-                currentPortal = Resources.firPortal;
-                break;
-            case 3: //Ed Body
-                currentPortalTile = Resources.bodPortalTile;
-                currentAltarTile = Resources.bodAltarTile;
-                currentAltar = Resources.bodAltarID;
-                currentPortal = Resources.bodPortal;
-                break;
-        }
+        currentAltar = Resources.altarIDs[areaID];
+        currentPortal = Resources.portalIDs[areaID];
     }
 
     @Override
@@ -63,10 +35,10 @@ public class Craft extends Task<ClientContext>
     @Override
     public void execute()
     {
-        if(ctx.movement.distance(currentAltarTile) > 5 && ctx.inventory.select().id(Resources.runeEs).count() != 0)
+        if(ctx.objects.select().id(currentAltar).within(5).isEmpty() && ctx.inventory.select().id(Resources.runeEs).count() != 0)
         {
             System.out.println("Running to altar");
-            ctx.movement.step(currentAltarTile);
+            ctx.movement.step(ctx.objects.select().id(currentAltar).poll());
             Condition.sleep(Random.nextInt(1000, 1500));
         }
         if(!ctx.objects.select().id(currentAltar).poll().inViewport())
@@ -85,7 +57,7 @@ public class Craft extends Task<ClientContext>
                     }
                 }, 250, 6);
         }
-        if(ctx.movement.distance(currentPortalTile) > 5 && ctx.inventory.select().id(Resources.runeEs).isEmpty())
+        if(ctx.objects.select().id(currentPortal).within(5).isEmpty() && ctx.inventory.select().id(Resources.runeEs).isEmpty())
         {
             System.out.println("Walking to portal");
             ctx.movement.step(ctx.objects.select().id(currentPortal).poll());
@@ -98,7 +70,7 @@ public class Craft extends Task<ClientContext>
                 Condition.wait(new Callable<Boolean>() {
                     @Override
                     public Boolean call() throws Exception {
-                        return ctx.movement.distance(currentPortalTile) != -1;
+                        return ctx.movement.distance(ctx.objects.select().id(currentPortal).poll()) != -1;
                     }
             }, 250, 6);
         }
