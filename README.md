@@ -1,4 +1,4 @@
-# RuneRunner - beta
+# RuneRunner
 Supports:
 - Air runes (Falador)
 - Earth runes (Varrock)
